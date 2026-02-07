@@ -1,18 +1,6 @@
 services:
   agent-zero:
     image: 'agent0ai/agent-zero:latest'
-    labels:
-      # Label Traefik per routing corretto
-      - "traefik.enable=true"
-      - "traefik.http.routers.agentzero.rule=Host(`a0.coolify.iacovici.it`)"
-      - "traefik.http.routers.agentzero.entrypoints=websecure"
-      - "traefik.http.routers.agentzero.tls=true"
-      - "traefik.http.routers.agentzero.tls.certresolver=letsencrypt"
-      - "traefik.http.services.agentzero.loadbalancer.server.port=80"
-      # Headers necessari per Agent Zero dietro proxy
-      - "traefik.http.middlewares.agentzero-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
-      - "traefik.http.middlewares.agentzero-headers.headers.customrequestheaders.X-Forwarded-For=$$REMOTE_ADDR"
-      - "traefik.http.routers.agentzero.middlewares=agentzero-headers"
     volumes:
       - 'agent-zero-usr:/a0/usr'
       - 'agent-zero-memory:/a0/memory'
@@ -22,14 +10,6 @@ services:
       - 'agent-zero-prompts:/a0/prompts'
       - 'agent-zero-tmp:/a0/tmp'
     restart: unless-stopped
-    expose:
-      - "80"
-    networks:
-      - coolify
-
-networks:
-  coolify:
-    external: true
 
 volumes:
   agent-zero-usr:
