@@ -1,21 +1,26 @@
 services:
   agent-zero:
-    image: agent0ai/agent-zero:latest
+    image: 'agent0ai/agent-zero:latest'
     container_name: agent-zero
     environment:
       - SERVICE_FQDN_AGENTZERO_80
+    ports:
+      - "80:80"  # QUESTO MANCAVA!
     volumes:
-      # Dati utente e progetti
-      - agent-zero-usr:/a0/usr
-      # Dati dell'agente che DEVONO essere persistenti
-      - agent-zero-memory:/a0/memory
-      - agent-zero-knowledge:/a0/knowledge
-      - agent-zero-agents:/a0/agents
-      - agent-zero-instruments:/a0/instruments
-      - agent-zero-tmp:/a0/tmp
+      - 'agent-zero-usr:/a0/usr'
+      - 'agent-zero-memory:/a0/memory'
+      - 'agent-zero-knowledge:/a0/knowledge'
+      - 'agent-zero-agents:/a0/agents'
+      - 'agent-zero-instruments:/a0/instruments'
+      - 'agent-zero-prompts:/a0/prompts'  # AGGIUNTO
+      - 'agent-zero-tmp:/a0/tmp'
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      test:
+        - CMD
+        - curl
+        - '-f'
+        - 'http://localhost:80'
       interval: 30s
       timeout: 10s
       retries: 3
@@ -27,4 +32,5 @@ volumes:
   agent-zero-knowledge:
   agent-zero-agents:
   agent-zero-instruments:
+  agent-zero-prompts:  # AGGIUNTO
   agent-zero-tmp:
