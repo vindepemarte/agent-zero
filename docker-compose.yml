@@ -1,9 +1,7 @@
 services:
-  agent-zero:
+  agent-zero:  # Questo è il nome del SERVIZIO
     image: 'agent0ai/agent-zero:latest'
-    container_name: agent-zero
-    environment:
-      - SERVICE_FQDN_AGENTZERO_80=https://a0.coolify.iacovici.it
+    # RIMUOVI container_name - Coolify lo gestisce automaticamente
     volumes:
       - 'agent-zero-usr:/a0/usr'
       - 'agent-zero-memory:/a0/memory'
@@ -19,7 +17,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    # NON SERVE PORTS! Coolify usa il reverse proxy interno
 
 volumes:
   agent-zero-usr:
