@@ -3,19 +3,16 @@ services:
     image: agent0ai/agent-zero:latest
     container_name: agent-zero
     environment:
-      # Variabili opzionali - possono essere configurate anche via WebUI
       - SERVICE_FQDN_AGENTZERO_80
-      # Aggiungi qui le tue API keys se vuoi (opzionale)
-      # - OPENAI_API_KEY=${OPENAI_API_KEY}
-      # - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
     volumes:
-      # Persistenza dati - IMPORTANTE per non perdere memory, settings, ecc.
+      # Dati utente e progetti
+      - agent-zero-usr:/a0/usr
+      # Dati dell'agente che DEVONO essere persistenti
       - agent-zero-memory:/a0/memory
       - agent-zero-knowledge:/a0/knowledge
-      - agent-zero-instruments:/a0/instruments
-      - agent-zero-prompts:/a0/prompts
-      - agent-zero-tmp:/a0/tmp
       - agent-zero-agents:/a0/agents
+      - agent-zero-instruments:/a0/instruments
+      - agent-zero-tmp:/a0/tmp
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80"]
@@ -25,9 +22,9 @@ services:
       start_period: 40s
 
 volumes:
+  agent-zero-usr:
   agent-zero-memory:
   agent-zero-knowledge:
-  agent-zero-instruments:
-  agent-zero-prompts:
-  agent-zero-tmp:
   agent-zero-agents:
+  agent-zero-instruments:
+  agent-zero-tmp:
